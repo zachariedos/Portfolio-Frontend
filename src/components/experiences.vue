@@ -1,8 +1,4 @@
 <template>
-  <div class="autoScroll" @click="(scrollplay = !scrollplay), autoScroll()">
-    <img v-if="!scrollplay" src="../img/play.png" alt="play" />
-    <img v-else src="../img/pause.png" alt="play" />
-  </div>
   <h1></h1>
   <div id="title">
     <img src="../img/profile.jpg" alt="Profile picture" class="profile" />
@@ -44,7 +40,6 @@ export default {
       dateLocales: { fr: fr },
       espacement: 250, // ne pas toucher
       stepgeneratestyle: "",
-      scrollplay: false,
       counter: 0,
       timerOn: 0,
     };
@@ -52,54 +47,46 @@ export default {
   methods: {
     async showExperiences() {
       axios
-        .get(`${process.env.VUE_APP_API_URL}/`)
-        .then((resp) => {
-          if (resp.data) {
-            this.experiences = resp.data;
-            this.experiences.forEach((experience) => {
-              let newstart = format(
-                new Date(JSON.parse(experience.fromto).start),
-                "dd MMMM yyyy",
-                { locale: fr }
-              );
-              let newend =
-                JSON.parse(experience.fromto).end != "today"
-                  ? format(
-                      new Date(JSON.parse(experience.fromto).end),
-                      "dd MMMM yyyy",
-                      { locale: fr }
-                    )
-                  : "Jusqu'à aujourd'hui";
-              experience.fromto = `{"start": "${newstart}", "end": "${newend}"}`;
-            });
+          .get(`${process.env.VUE_APP_API_URL}/`)
+          .then((resp) => {
+            if (resp.data) {
+              this.experiences = resp.data;
+              this.experiences.forEach((experience) => {
+                let newstart = format(
+                    new Date(JSON.parse(experience.fromto).start),
+                    "dd MMMM yyyy",
+                    { locale: fr }
+                );
+                let newend =
+                    JSON.parse(experience.fromto).end != "today"
+                        ? format(
+                            new Date(JSON.parse(experience.fromto).end),
+                            "dd MMMM yyyy",
+                            { locale: fr }
+                        )
+                        : "Jusqu'à aujourd'hui";
+                experience.fromto = `{"start": "${newstart}", "end": "${newend}"}`;
+              });
 
-            this.experiencesnb = Object.keys(this.experiences).length;
-            var style = document.createElement("style");
-            style.type = "text/css";
-            for (var i = 0; i < this.experiencesnb; i++) {
-              this.stepgeneratestyle += `.step:nth-child(${i + 1}) { top: ${
-                (i + 1) * (this.espacement * 2)
-              }px} `;
+              this.experiencesnb = Object.keys(this.experiences).length;
+              var style = document.createElement("style");
+              style.type = "text/css";
+              for (var i = 0; i < this.experiencesnb; i++) {
+                this.stepgeneratestyle += `.step:nth-child(${i + 1}) { top: ${
+                    (i + 1) * (this.espacement * 2)
+                }px} `;
+              }
+
+              style.innerHTML = this.stepgeneratestyle;
+              document.getElementsByTagName("head")[0].appendChild(style);
+              setTimeout(() => {
+                this.showmustGoOn();
+              }, 0.001);
             }
-
-            style.innerHTML = this.stepgeneratestyle;
-            document.getElementsByTagName("head")[0].appendChild(style);
-            setTimeout(() => {
-              this.showmustGoOn();
-            }, 0.001);
-          }
-        })
-        .catch(() => console.log("erreur serveur"));
+          })
+          .catch(() => console.log("erreur serveur"));
     },
 
-    autoScroll() {
-      if (this.scrollplay) {
-        window.scrollBy(0, 2);
-        setTimeout(() => {
-          this.autoScroll();
-        }, 0.1);
-      }
-    },
     showmustGoOn() {
       const content = document.querySelector("#content");
       const nbexperiences = this.experiencesnb;
@@ -126,15 +113,15 @@ export default {
         const c2 = noise2D(i * 0.002, i * 0.001);
 
         const style = !step
-          ? {
+            ? {
               transform: `translate(${c2 * 50}px) rotate(${
-                c2 * 300
+                  c2 * 300
               }deg) scale(${3 + c1 * 3}, ${3 + c2 * 2})`,
               boxShadow: `0 0 0 .5px hsla(${Math.floor(
-                i * 0.3
+                  i * 0.3
               )}, 70%, 70%, .1)`,
             }
-          : {
+            : {
               transform: `translate(${c2 * 50}px)`,
               border: `solid 5px hsla(${Math.floor(i * 0.3)}, 70%, 70%, 1)`,
             };
@@ -146,7 +133,7 @@ export default {
           div.classList.add("line");
           const style = {
             background: `linear-gradient(90deg, hsla(${Math.floor(
-              i * 0.3
+                i * 0.3
             )}, 70%, 70%, 1) 0%, rgb(35, 39, 46) 100%)`,
           };
           Object.assign(div.style, style);
@@ -214,8 +201,6 @@ export default {
     this.showExperiences();
   },
 };
-
-//------------------------------------------------------------------------------------------------
 </script>
 
 <style scooped>
@@ -280,13 +265,13 @@ h3 {
 .colored {
   background: rgb(255, 0, 0);
   background: linear-gradient(
-    60deg,
-    hsla(0, 70%, 70%, 1) 0%,
-    hsla(60, 70%, 70%, 1) 20%,
-    hsla(120, 70%, 70%, 1) 40%,
-    hsla(180, 70%, 70%, 1) 60%,
-    hsla(240, 70%, 70%, 1) 80%,
-    hsla(300, 70%, 70%, 1) 100%
+      60deg,
+      hsla(0, 70%, 70%, 1) 0%,
+      hsla(60, 70%, 70%, 1) 20%,
+      hsla(120, 70%, 70%, 1) 40%,
+      hsla(180, 70%, 70%, 1) 60%,
+      hsla(240, 70%, 70%, 1) 80%,
+      hsla(300, 70%, 70%, 1) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -327,25 +312,5 @@ h3 {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-}
-
-.autoScroll {
-  background-color: white;
-  position: -webkit-fixed;
-  position: fixed;
-  width: 50px;
-  height: 50px;
-  bottom: 30px;
-  right: 30px;
-  border-radius: 10px;
-  z-index: 9999;
-  display: flex;
-}
-.autoScroll:hover {
-  cursor: pointer;
-}
-.autoScroll img {
-  width: 30px;
-  margin: auto;
 }
 </style>

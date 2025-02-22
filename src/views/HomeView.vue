@@ -1,15 +1,15 @@
 <template>
-  <Experiences />
+  <Portfolio />
 </template>
 
 <script>
-import Experiences from "@/components/experiences.vue";
+import Portfolio from "@/components/portfolio.vue";
 
 export default {
   name: "HomeView",
-  title: "Experiences",
+  title: "Portfolio",
   components: {
-    Experiences,
+    Portfolio,
   },
 };
 </script>
