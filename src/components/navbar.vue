@@ -6,7 +6,7 @@
       <router-link v-if="this.toCheck" to="/admin">Administration</router-link>
     </div>
     <div class="github-link">
-      <a href="https://github.com/zachariedos" target="_blank">
+      <a href="https://github.com/zdossantos" target="_blank">
         <img src="/github.png" alt="github" class="size-12" />
       </a>
     </div>
